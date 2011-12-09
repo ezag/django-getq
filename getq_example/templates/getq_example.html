@@ -1,8 +1,59 @@
-<table>
-{% for i0, i1 in items %}
-  <tr>
-    <td>{{ i0 }}</td>
-    <td>{{ i1 }}</td>
-  </tr>
-{% endfor %}
-</table>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>django-getq demo</title>
+    <style>
+      * { font-family: sans-serif; }
+      ul.paginator, ul.paginator li { display: inline; padding: 0 }
+      table { margin: 0 auto; border-collapse: collapse; }
+      table, table td, table th { border: 1px solid; }
+      table td, table th { padding: 0.2ex 1em; }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th><a href="#">
+          column 1
+          {% if sort_index == 0 %}
+            {% if reverse %}
+              &uarr;
+            {% else %}
+              &darr;
+            {% endif %}
+          {% endif %}
+        </a></th>
+        <th><a href="#">
+          column 2
+          {% if sort_index == 1 %}
+            {% if reverse %}
+              &uarr;
+            {% else %}
+              &darr;
+            {% endif %}
+          {% endif %}
+        </a></th>
+      </tr>
+      {% for i0, i1 in items %}
+      <tr>
+        <td>{{ i0 }}</td>
+        <td>{{ i1 }}</td>
+      </tr>
+      {% endfor %}
+      <th colspan="2">
+        <ul class="paginator">
+          {% for page in page_range %}
+          <li>
+          {% if page == current_page %}
+          {{ page }}
+          {% else %}
+          <a href="#">{{ page }}</a>
+          {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </th>
+    </table>
+  </body>
+</html>

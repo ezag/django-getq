@@ -18,13 +18,13 @@ def get_items(sort_index=0, reverse=False):
 
 def index(request):
     try:
-        sort_by = int(request.GET.get('sort'))
+        sort_index = int(request.GET.get('sort'))
     except (TypeError, ValueError):
-        sort_by = 0
+        sort_index = 0
     else:
-        sort_by = min(max(sort_by, 0), 1)
+        sort_index = min(max(sort_index, 0), 1)
     reverse = (request.GET.get('order') == 'desc')
-    items = get_items(sort_by, reverse)
+    items = get_items(sort_index, reverse)
     items_per_page = 3
     p = Paginator(items, items_per_page)
     try:
@@ -37,4 +37,6 @@ def index(request):
         'items': p.page(page).object_list,
         'page_range': p.page_range,
         'current_page': page,
+        'sort_index': sort_index,
+        'reverse': reverse,
     })
