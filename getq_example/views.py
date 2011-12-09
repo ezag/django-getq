@@ -16,6 +16,13 @@ def get_items(sort_index=0, reverse=False):
     return sorted(items, key=lambda i: i[sort_index], reverse=reverse)
 
 def index(request):
+    try:
+        sort_by = int(request.GET.get('sort'))
+    except (TypeError, ValueError):
+        sort_by = 0
+    else:
+        sort_by = min(max(sort_by, 0), 1)
+    reverse = (request.GET.get('order') == 'desc')
     return render_to_response('getq_example.html', {
-        'items': get_items(),
+        'items': get_items(sort_by, reverse),
     })
