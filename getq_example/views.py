@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render_to_response
 
 def get_items(sort_index=0, reverse=False):
@@ -23,6 +24,17 @@ def index(request):
     else:
         sort_by = min(max(sort_by, 0), 1)
     reverse = (request.GET.get('order') == 'desc')
+    items = get_items(sort_by, reverse)
+    items_per_page = 3
+    p = Paginator(items, items_per_page)
+    try:
+        page = int(request.GET.get('page'))
+    except (TypeError, ValueError):
+        page = 1
+    else:
+        page = min(max(page, 1), p.num_pages)
     return render_to_response('getq_example.html', {
-        'items': get_items(sort_by, reverse),
+        'items': p.page(page).object_list,
+        'page_range': p.page_range,
+        'current_page': page,
     })
