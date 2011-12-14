@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 def get_items(sort_index=0, reverse=False):
     items = (
@@ -39,4 +40,4 @@ def index(request):
         'current_page': page,
         'sort_index': sort_index,
         'reverse': reverse,
-    })
+    }, context_instance=RequestContext(request))

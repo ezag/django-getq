@@ -7,6 +7,13 @@ class GetqUpdateNode(template.Node):
         pass
 
     def render(self, context):
+        try:
+            request = context['request']
+        except KeyError:
+            raise template.TemplateSyntaxError(
+                "No request available in context (perhaps request context "
+                "processor is disabled?)"
+            )
         return 'hello-world'
 
 @register.tag
