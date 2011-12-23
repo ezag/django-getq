@@ -18,8 +18,16 @@ class GetqUpdateNode(template.Node):
         # Not using QueryDict.update() because it does append updated
         # values to existing ones rather then replace them.
         for param, value in self.new_params.iteritems():
-            params[param] = value.to_literal(context)
-        return '%s?%s' % (request.path, params.urlencode())
+            literal = value.to_literal(context)
+            if literal is None:
+                if param in params:
+                    del params[param]
+            else:
+                params[param] = literal
+        if params:
+            return '%s?%s' % (request.path, params.urlencode())
+        else:
+            return request.path
 
 
 class Value(object):
@@ -28,6 +36,9 @@ class Value(object):
 
     def to_literal(self, context):
         # TODO: Use smarter parsing with escaping support, etc.
+        if not self.raw:
+            # Empty string means that param sould be removed
+            return None
         if self.raw[0] == self.raw[-1] and self.raw[0] in ('"', "'"):
             # Got literal - unquote the value
             return self.raw[1:-1]

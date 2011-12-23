@@ -15,26 +15,30 @@
   <body>
     <table>
       <tr>
-        <th><a href="#">
+        <th>
+          {% if reverse or sort_index != 0 %}
+            <a href="{% getq_update sort='0' page= order= %}">
+          {% else %}
+            <a href="{% getq_update sort='0' page= order='desc' %}">
+          {% endif %}
           column 1
           {% if sort_index == 0 %}
-            {% if reverse %}
-              &uarr;
-            {% else %}
-              &darr;
-            {% endif %}
+            {% if reverse %}&uarr;{% else %}&darr;{% endif %}
           {% endif %}
-        </a></th>
-        <th><a href="#">
+          </a>
+        </th>
+        <th>
+          {% if reverse or sort_index != 1 %}
+            <a href="{% getq_update sort='1' page= order= %}">
+          {% else %}
+            <a href="{% getq_update sort='1' page= order='desc' %}">
+          {% endif %}
           column 2
           {% if sort_index == 1 %}
-            {% if reverse %}
-              &uarr;
-            {% else %}
-              &darr;
-            {% endif %}
+            {% if reverse %}&uarr;{% else %}&darr;{% endif %}
           {% endif %}
-        </a></th>
+          </a>
+        </th>
       </tr>
       {% for i0, i1 in items %}
       <tr>
